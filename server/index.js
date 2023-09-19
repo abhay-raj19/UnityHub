@@ -8,7 +8,8 @@ import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
-import { error, log } from "console";
+import authRoutes from "./routes/auth.js";
+import userRoutes from "./routes/users.js";
 import { register } from "./controllers/auth.js";
 
 // configurations ..
@@ -40,7 +41,11 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // ROUTES WITH FILE
-app.post('/auth/register',upload.single("picture"),register);
+app.post("/auth/register", upload.single("picture"), register);
+
+// ROUTES FROM AUTH.JS
+app.use("/auth", authRoutes);
+app.use("/users", userRoutes);
 
 // MONGOOSE SETUP
 const PORT = process.env.PORT || 6001;
@@ -50,6 +55,8 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    app.listen(PORT, () => console.log(`Database connected succesfully:${PORT}`));
+    app.listen(PORT, () =>
+      console.log(`Database connected succesfully:${PORT}`)
+    );
   })
   .catch((error) => console.log(`${error} did not connect`));
