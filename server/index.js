@@ -11,9 +11,10 @@ import { fileURLToPath } from "url";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
 import { register } from "./controllers/auth.js";
-import { createPost } from "./routes/posts.js"
+import { createPost } from "./controllers/posts.js";
 import { verify } from "crypto";
 import { verifyToken } from "./middleware/auth.js";
+import { users, posts } from "./data/index.js";
 
 // configurations ..
 const __filename = fileURLToPath(import.meta.url);
@@ -45,7 +46,7 @@ const upload = multer({ storage });
 
 // ROUTES WITH FILE
 app.post("/auth/register", upload.single("picture"), register);
-app.post("/posts",verifyToken,upload.single("picture"),createPost)
+app.post("/posts", verifyToken, upload.single("picture"), createPost);
 
 // ROUTES FROM AUTH.JS
 app.use("/auth", authRoutes);
@@ -62,5 +63,9 @@ mongoose
     app.listen(PORT, () =>
       console.log(`Database connected succesfully:${PORT}`)
     );
+    //ADDING DATA(USERS AND POSTS) ONE TIME
+    User.insertMany(users);
+    Post.insertMany(posts);
+
   })
   .catch((error) => console.log(`${error} did not connect`));
