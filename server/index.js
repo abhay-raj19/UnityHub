@@ -67,8 +67,8 @@ mongoose
       console.log(`Database connected succesfully:${PORT}`)
     );
     // //ADDING DATA(USERS AND POSTS) ONE TIME
-    // // User.insertMany(users);
-    // // Post.insertMany(posts);
+    // User.insertMany(users);
+    // Post.insertMany(posts);
 
   })
   .catch((error) => console.log(`${error} did not connect`));
